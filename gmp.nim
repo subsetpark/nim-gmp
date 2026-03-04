@@ -37,8 +37,7 @@ when defined(Posix):
   {.passl: "-lgmp".}
 
 type 
-  INNER_C_UNION_5532179898798000430* {.importc: "no_name", header: "<gmp.h>".} = object  {.
-      union.}
+  INNER_C_UNION_5532179898798000430* {.importc: "no_name", header: "<gmp.h>", union.} = object
     mp_lc* {.importc: "_mp_lc".}: pointer
   
   # should check limb sizes / import them directly?
@@ -92,13 +91,13 @@ const
   GMP_RAND_ALG_DEFAULT: gmp_randalg_t = 0.gmp_randalg_t
   GMP_RAND_ALG_LC: gmp_randalg_t = GMP_RAND_ALG_DEFAULT
 
-proc mp_set_memory_functions*(a2: proc (a2: csize): pointer; a3: proc (
-    a2: pointer; a3: csize; a4: csize): pointer; 
-                              a4: proc (a2: pointer; a3: csize)) {.
+proc mp_set_memory_functions*(a2: proc (a2: csize_t): pointer; a3: proc (
+    a2: pointer; a3: csize_t; a4: csize_t): pointer; 
+                              a4: proc (a2: pointer; a3: csize_t)) {.
     importc: "mp_set_memory_functions", header: "<gmp.h>".}
-proc mp_get_memory_functions*(a2: proc (a2: csize): pointer; a3: proc (
-    a2: pointer; a3: csize; a4: csize): pointer; 
-                              a4: proc (a2: pointer; a3: csize)) {.
+proc mp_get_memory_functions*(a2: proc (a2: csize_t): pointer; a3: proc (
+    a2: pointer; a3: csize_t; a4: csize_t): pointer; 
+                              a4: proc (a2: pointer; a3: csize_t)) {.
     importc: "mp_get_memory_functions", header: "<gmp.h>".}
 var mp_bits_per_limb* {.importc: "mp_bits_per_limb", header: "<gmp.h>".}: cint
 
@@ -135,7 +134,7 @@ proc gmp_fprintf*(a2: ptr FILE; a3: cstring): cint {.varargs,
     importc: "gmp_fprintf", header: "<gmp.h>".}
 proc gmp_printf*(a2: cstring): cint {.varargs, importc: "gmp_printf", 
                                       header: "<gmp.h>".}
-proc gmp_snprintf*(a2: cstring; a3: csize; a4: cstring): cint {.varargs, 
+proc gmp_snprintf*(a2: cstring; a3: csize_t; a4: cstring): cint {.varargs, 
     importc: "gmp_snprintf", header: "<gmp.h>".}
 proc gmp_sprintf*(a2: cstring; a3: cstring): cint {.varargs, 
     importc: "gmp_sprintf", header: "<gmp.h>".}
@@ -145,7 +144,7 @@ proc gmp_sprintf*(a2: cstring; a3: cstring): cint {.varargs,
 #    importc: "gmp_vfprintf", header: "<gmp.h>".}
 #proc gmp_vprintf*(a2: cstring; a3: va_list): cint {.importc: "gmp_vprintf", 
 #    header: "<gmp.h>".}
-#proc gmp_vsnprintf*(a2: cstring; a3: csize; a4: cstring; a5: va_list): cint {.
+#proc gmp_vsnprintf*(a2: cstring; a3: csize_t; a4: cstring; a5: va_list): cint {.
 #    importc: "gmp_vsnprintf", header: "<gmp.h>".}
 #proc gmp_vsprintf*(a2: cstring; a3: cstring; a4: va_list): cint {.
 #    importc: "gmp_vsprintf", header: "<gmp.h>".}
@@ -237,8 +236,8 @@ proc mpz_divisible_ui_p*(a2: mpz_srcptr; a3: culong): cint {.
 proc mpz_divisible_2exp_p*(a2: mpz_srcptr; a3: mp_bitcnt_t): cint {.
     importc: "mpz_divisible_2exp_p", header: "<gmp.h>".}
 proc mpz_dump*(a2: mpz_srcptr) {.importc: "mpz_dump", header: "<gmp.h>".}
-proc mpz_export*(a2: pointer; a3: ptr csize; a4: cint; a5: csize; a6: cint; 
-                 a7: csize; a8: mpz_srcptr): pointer {.importc: "mpz_export", 
+proc mpz_export*(a2: pointer; a3: ptr csize_t; a4: cint; a5: csize_t; a6: cint; 
+                 a7: csize_t; a8: mpz_srcptr): pointer {.importc: "mpz_export", 
     header: "<gmp.h>".}
 proc mpz_fac_ui*(a2: mpz_ptr; a3: culong) {.importc: "mpz_fac_ui", 
     header: "<gmp.h>".}
@@ -292,8 +291,8 @@ proc mpz_get_str*(a2: cstring; a3: cint; a4: mpz_srcptr): cstring {.
     importc: "mpz_get_str", header: "<gmp.h>".}
 proc mpz_hamdist*(a2: mpz_srcptr; a3: mpz_srcptr): mp_bitcnt_t {.
     importc: "mpz_hamdist", header: "<gmp.h>".}
-proc mpz_import*(a2: mpz_ptr; a3: csize; a4: cint; a5: csize; a6: cint; 
-                 a7: csize; a8: pointer) {.importc: "mpz_import", 
+proc mpz_import*(a2: mpz_ptr; a3: csize_t; a4: cint; a5: csize_t; a6: cint; 
+                 a7: csize_t; a8: pointer) {.importc: "mpz_import", 
     header: "<gmp.h>".}
 proc mpz_init*(a2: mpz_ptr) {.importc: "mpz_init", header: "<gmp.h>".}
 proc mpz_init2*(a2: mpz_ptr; a3: mp_bitcnt_t) {.importc: "mpz_init2", 
@@ -309,9 +308,9 @@ proc mpz_init_set_str*(a2: mpz_ptr; a3: cstring; a4: cint): cint {.
     importc: "mpz_init_set_str", header: "<gmp.h>".}
 proc mpz_init_set_ui*(a2: mpz_ptr; a3: culong) {.importc: "mpz_init_set_ui", 
     header: "<gmp.h>".}
-proc mpz_inp_raw*(a2: mpz_ptr; a3: ptr FILE): csize {.importc: "mpz_inp_raw", 
+proc mpz_inp_raw*(a2: mpz_ptr; a3: ptr FILE): csize_t {.importc: "mpz_inp_raw", 
     header: "<gmp.h>".}
-proc mpz_inp_str*(a2: mpz_ptr; a3: ptr FILE; a4: cint): csize {.
+proc mpz_inp_str*(a2: mpz_ptr; a3: ptr FILE; a4: cint): csize_t {.
     importc: "mpz_inp_str", header: "<gmp.h>".}
 proc mpz_invert*(a2: mpz_ptr; a3: mpz_srcptr; a4: mpz_srcptr): cint {.
     importc: "mpz_invert", header: "<gmp.h>".}
@@ -349,9 +348,9 @@ proc mpz_mul_ui*(a2: mpz_ptr; a3: mpz_srcptr; a4: culong) {.
     importc: "mpz_mul_ui", header: "<gmp.h>".}
 proc mpz_nextprime*(a2: mpz_ptr; a3: mpz_srcptr) {.importc: "mpz_nextprime", 
     header: "<gmp.h>".}
-proc mpz_out_raw*(a2: ptr FILE; a3: mpz_srcptr): csize {.importc: "mpz_out_raw", 
+proc mpz_out_raw*(a2: ptr FILE; a3: mpz_srcptr): csize_t {.importc: "mpz_out_raw", 
     header: "<gmp.h>".}
-proc mpz_out_str*(a2: ptr FILE; a3: cint; a4: mpz_srcptr): csize {.
+proc mpz_out_str*(a2: ptr FILE; a3: cint; a4: mpz_srcptr): csize_t {.
     importc: "mpz_out_str", header: "<gmp.h>".}
 proc mpz_perfect_power_p*(a2: mpz_srcptr): cint {.
     importc: "mpz_perfect_power_p", header: "<gmp.h>".}
@@ -397,7 +396,7 @@ proc mpz_set_ui*(a2: mpz_ptr; a3: culong) {.importc: "mpz_set_ui",
     header: "<gmp.h>".}
 proc mpz_setbit*(a2: mpz_ptr; a3: mp_bitcnt_t) {.importc: "mpz_setbit", 
     header: "<gmp.h>".}
-proc mpz_sizeinbase*(a2: mpz_srcptr; a3: cint): csize {.
+proc mpz_sizeinbase*(a2: mpz_srcptr; a3: cint): csize_t {.
     importc: "mpz_sizeinbase", header: "<gmp.h>".}
 proc mpz_sqrt*(a2: mpz_ptr; a3: mpz_srcptr) {.importc: "mpz_sqrt", 
     header: "<gmp.h>".}
@@ -482,7 +481,7 @@ proc mpq_get_str*(a2: cstring; a3: cint; a4: mpq_srcptr): cstring {.
     importc: "mpq_get_str", header: "<gmp.h>".}
 proc mpq_init*(a2: mpq_ptr) {.importc: "mpq_init", header: "<gmp.h>".}
 proc mpq_inits*(a2: mpq_ptr) {.varargs, importc: "mpq_inits", header: "<gmp.h>".}
-proc mpq_inp_str*(a2: mpq_ptr; a3: ptr FILE; a4: cint): csize {.
+proc mpq_inp_str*(a2: mpq_ptr; a3: ptr FILE; a4: cint): csize_t {.
     importc: "mpq_inp_str", header: "<gmp.h>".}
 proc mpq_inv*(a2: mpq_ptr; a3: mpq_srcptr) {.importc: "mpq_inv", 
     header: "<gmp.h>".}
@@ -490,7 +489,7 @@ proc mpq_mul*(a2: mpq_ptr; a3: mpq_srcptr; a4: mpq_srcptr) {.importc: "mpq_mul",
     header: "<gmp.h>".}
 proc mpq_mul_2exp*(a2: mpq_ptr; a3: mpq_srcptr; a4: mp_bitcnt_t) {.
     importc: "mpq_mul_2exp", header: "<gmp.h>".}
-proc mpq_out_str*(a2: ptr FILE; a3: cint; a4: mpq_srcptr): csize {.
+proc mpq_out_str*(a2: ptr FILE; a3: cint; a4: mpq_srcptr): csize_t {.
     importc: "mpq_out_str", header: "<gmp.h>".}
 proc mpq_set*(a2: mpq_ptr; a3: mpq_srcptr) {.importc: "mpq_set", 
     header: "<gmp.h>".}
@@ -566,7 +565,7 @@ proc mpf_get_prec*(a2: mpf_srcptr): mp_bitcnt_t {.importc: "mpf_get_prec",
     header: "<gmp.h>".}
 proc mpf_get_si*(a2: mpf_srcptr): clong {.importc: "mpf_get_si", 
     header: "<gmp.h>".}
-proc mpf_get_str*(a2: cstring; a3: ptr mp_exp_t; a4: cint; a5: csize; 
+proc mpf_get_str*(a2: cstring; a3: ptr mp_exp_t; a4: cint; a5: csize_t; 
                   a6: mpf_srcptr): cstring {.importc: "mpf_get_str", 
     header: "<gmp.h>".}
 proc mpf_get_ui*(a2: mpf_srcptr): culong {.importc: "mpf_get_ui", 
@@ -585,7 +584,7 @@ proc mpf_init_set_str*(a2: mpf_ptr; a3: cstring; a4: cint): cint {.
     importc: "mpf_init_set_str", header: "<gmp.h>".}
 proc mpf_init_set_ui*(a2: mpf_ptr; a3: culong) {.importc: "mpf_init_set_ui", 
     header: "<gmp.h>".}
-proc mpf_inp_str*(a2: mpf_ptr; a3: ptr FILE; a4: cint): csize {.
+proc mpf_inp_str*(a2: mpf_ptr; a3: ptr FILE; a4: cint): csize_t {.
     importc: "mpf_inp_str", header: "<gmp.h>".}
 proc mpf_integer_p*(a2: mpf_srcptr): cint {.importc: "mpf_integer_p", 
     header: "<gmp.h>".}
@@ -597,7 +596,7 @@ proc mpf_mul_ui*(a2: mpf_ptr; a3: mpf_srcptr; a4: culong) {.
     importc: "mpf_mul_ui", header: "<gmp.h>".}
 proc mpf_neg*(a2: mpf_ptr; a3: mpf_srcptr) {.importc: "mpf_neg", 
     header: "<gmp.h>".}
-proc mpf_out_str*(a2: ptr FILE; a3: cint; a4: csize; a5: mpf_srcptr): csize {.
+proc mpf_out_str*(a2: ptr FILE; a3: cint; a4: csize_t; a5: mpf_srcptr): csize_t {.
     importc: "mpf_out_str", header: "<gmp.h>".}
 proc mpf_pow_ui*(a2: mpf_ptr; a3: mpf_srcptr; a4: culong) {.
     importc: "mpf_pow_ui", header: "<gmp.h>".}
@@ -625,7 +624,7 @@ proc mpf_set_ui*(a2: mpf_ptr; a3: culong) {.importc: "mpf_set_ui",
     header: "<gmp.h>".}
 proc mpf_set_z*(a2: mpf_ptr; a3: mpz_srcptr) {.importc: "mpf_set_z", 
     header: "<gmp.h>".}
-proc mpf_size*(a2: mpf_srcptr): csize {.importc: "mpf_size", header: "<gmp.h>".}
+proc mpf_size*(a2: mpf_srcptr): csize_t {.importc: "mpf_size", header: "<gmp.h>".}
 proc mpf_sqrt*(a2: mpf_ptr; a3: mpf_srcptr) {.importc: "mpf_sqrt", 
     header: "<gmp.h>".}
 proc mpf_sqrt_ui*(a2: mpf_ptr; a3: culong) {.importc: "mpf_sqrt_ui", 
@@ -675,7 +674,7 @@ proc mpn_gcdext_1*(a2: ptr mp_limb_signed_t; a3: ptr mp_limb_signed_t;
 proc mpn_gcdext*(a2: mp_ptr; a3: mp_ptr; a4: ptr mp_size_t; a5: mp_ptr; 
                  a6: mp_size_t; a7: mp_ptr; a8: mp_size_t): mp_size_t {.
     importc: "mpn_gcdext", header: "<gmp.h>".}
-proc mpn_get_str*(a2: ptr cuchar; a3: cint; a4: mp_ptr; a5: mp_size_t): csize {.
+proc mpn_get_str*(a2: ptr cchar; a3: cint; a4: mp_ptr; a5: mp_size_t): csize_t {.
     importc: "mpn_get_str", header: "<gmp.h>".}
 proc mpn_hamdist*(a2: mp_srcptr; a3: mp_srcptr; a4: mp_size_t): mp_bitcnt_t {.
     importc: "mpn_hamdist", header: "<gmp.h>".}
@@ -716,9 +715,9 @@ proc mpn_scan0*(a2: mp_srcptr; a3: mp_bitcnt_t): mp_bitcnt_t {.
     importc: "mpn_scan0", header: "<gmp.h>".}
 proc mpn_scan1*(a2: mp_srcptr; a3: mp_bitcnt_t): mp_bitcnt_t {.
     importc: "mpn_scan1", header: "<gmp.h>".}
-proc mpn_set_str*(a2: mp_ptr; a3: ptr cuchar; a4: csize; a5: cint): mp_size_t {.
+proc mpn_set_str*(a2: mp_ptr; a3: ptr cchar; a4: csize_t; a5: cint): mp_size_t {.
     importc: "mpn_set_str", header: "<gmp.h>".}
-proc mpn_sizeinbase*(a2: mp_srcptr; a3: mp_size_t; a4: cint): csize {.
+proc mpn_sizeinbase*(a2: mp_srcptr; a3: mp_size_t; a4: cint): csize_t {.
     importc: "mpn_sizeinbase", header: "<gmp.h>".}
 proc mpn_sqrtrem*(a2: mp_ptr; a3: mp_ptr; a4: mp_srcptr; a5: mp_size_t): mp_size_t {.
     importc: "mpn_sqrtrem", header: "<gmp.h>".}
@@ -824,7 +823,7 @@ proc mpz_popcount*(mm_gmp_u: mpz_srcptr): mp_bitcnt_t {.importc: "mpz_popcount",
     header: "<gmp.h>".}
 proc mpz_set_q*(mm_gmp_w: mpz_ptr; mm_gmp_u: mpq_srcptr) {.importc: "mpz_set_q", 
     header: "<gmp.h>".}
-proc mpz_size*(mm_gmp_z: mpz_srcptr): csize {.importc: "mpz_size", 
+proc mpz_size*(mm_gmp_z: mpz_srcptr): csize_t {.importc: "mpz_size", 
     header: "<gmp.h>".}
 proc mpq_abs*(mm_gmp_w: mpq_ptr; mm_gmp_u: mpq_srcptr) {.importc: "mpq_abs", 
     header: "<gmp.h>".}

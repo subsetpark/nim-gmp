@@ -1,11 +1,12 @@
-[Package]
-name          = "gmp"
-version       = "0.2.5"
+# Package
+
+version       = "0.2.6"
 author        = "Will Szumski"
 description   = "Wrapper for the GNU Multiple Precision Arithmetic Library (GMP)"
 license       = "MIT"
 srcDir        = "src"
-InstallExt    = "nim"
+installExt    = @["nim"]
+skipDirs      = @["examples"]
+# Dependencies
 
-[Deps]
-Requires: "nimrod >= 0.9.4"
+requires "nim > 0.9.6"  # 0.9.6 is the last version of nimrod
